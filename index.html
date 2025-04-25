@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cassino dos Imperadores</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom right, #4d0f0f, #1b1b1b);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1, h2 {
+      text-shadow: 2px 2px #000;
+    }
+    .btn {
+      background-color: #b80000;
+      color: white;
+      padding: 15px 30px;
+      margin: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background-color: #ff2e2e;
+    }
+    .home, .bingo, .slots {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .num {
+      background: #222;
+      border-radius: 8px;
+      padding: 15px;
+      font-size: 1.2rem;
+    }
+    .reels {
+      display: flex;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .reel {
+      width: 60px;
+      height: 60px;
+      background: #222;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      transition: 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cassino dos Imperadores</h1>
+  <div class="home" style="display:flex">
+    <button class="btn" onclick="mostrarBingo()">Jogar Bingo</button>
+    <button class="btn" onclick="mostrarSlots()">Jogar Caça-Níquel</button>
+  </div>
+  <div class="bingo" id="bingo">
+    <h2>Bingo dos Imperadores</h2>
+    <div class="card" id="bingoCard"></div>
+    <button class="btn" onclick="sortearNumero()">Sortear Número</button>
+    <p id="numeroSorteado"></p>
+    <button class="btn" onclick="voltarHome()">Voltar</button>
+  </div>
+  <div class="slots" id="slots">
+    <h2>Caça-Níquel dos Imperadores</h2>
+    <div class="reels">
+      <div class="reel" id="r1">?</div>
+      <div class="reel" id="r2">?</div>
+      <div class="reel" id="r3">?</div>
+    </div>
+    <button class="btn" onclick="girarSlots()">Girar</button>
+    <p id="resultado"></p>
+    <button class="btn" onclick="voltarHome()">Voltar</button>
+  </div>
+  <script>
+    const simbolos = ['🍒', '🍋', '🔔', '⭐', '7'];
+    function mostrarBingo() {
+      document.querySelector('.home').style.display = 'none';
+      document.querySelector('.bingo').style.display = 'flex';
+      gerarCartela();
+    }
+    function mostrarSlots() {
+      document.querySelector('.home').style.display = 'none';
+      document.querySelector('.slots').style.display = 'flex';
+    }
+    function voltarHome() {
+      document.querySelector('.bingo').style.display = 'none';
+      document.querySelector('.slots').style.display = 'none';
+      document.querySelector('.home').style.display = 'flex';
+      document.getElementById('numeroSorteado').textContent = '';
+      document.getElementById('resultado').textContent = '';
+    }
+    function gerarCartela() {
+      const card = document.getElementById('bingoCard');
+      card.innerHTML = '';
+      const numeros = [];
+      while (numeros.length < 25) {
+        const n = Math.floor(Math.random() * 75) + 1;
+        if (!numeros.includes(n)) {
+          numeros.push(n);
+          const div = document.createElement('div');
+          div.className = 'num';
+          div.textContent = n;
+          card.appendChild(div);
+        }
+      }
+    }
+    function sortearNumero() {
+      const n = Math.floor(Math.random() * 75) + 1;
+      document.getElementById('numeroSorteado').textContent = 'Número sorteado: ' + n;
+    }
+    function girarSlots() {
+      const r1 = document.getElementById('r1');
+      const r2 = document.getElementById('r2');
+      const r3 = document.getElementById('r3');
+      r1.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+      r2.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+      r3.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+      const resultado = document.getElementById('resultado');
+      if (r1.textContent === r2.textContent && r2.textContent === r3.textContent) {
+        resultado.textContent = 'Jackpot! Você ganhou!';
+      } else {
+        resultado.textContent = 'Tente novamente!';
+      }
+    }
+  </script>
+</body>
+</html>
